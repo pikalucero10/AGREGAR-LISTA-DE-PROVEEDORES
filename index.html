@@ -1,91 +1,125 @@
-<html><head><base href="https://websim.io/"><title>Tabla de Contactos y Descuentos - Diseño Centrado</title>
+<html><head><base href="https://websim.io/"><title>Tabla de Contactos y Descuentos - Diseño Moderno</title>
 <style>
     body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f0f0f0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f5f5;
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        justify-content: center;
         padding: 20px;
-        text-align: center;
+        color: #333;
+    }
+    .container {
+        width: 100%;
+        max-width: 900px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
     }
     h1 {
-        color: #8e44ad;
-        margin-bottom: 30px;
-    }
-    table {
-        border-collapse: separate;
-        border-spacing: 0;
-        width: 100%;
-        max-width: 800px;
-        background-color: white;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 0 auto;
-    }
-    th, td {
-        padding: 15px;
+        color: #4a148c;
         text-align: center;
-        border: 1px solid #e0e0e0;
-    }
-    th {
-        background-color: #8e44ad;
-        color: white;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-    tr:nth-child(even) {
-        background-color: #f8f9fa;
+        margin-bottom: 30px;
+        font-weight: 300;
+        font-size: 2.5em;
     }
     form {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        max-width: 800px;
-        margin-bottom: 20px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        justify-content: space-between;
+        margin-bottom: 30px;
     }
     input, select {
-        padding: 12px;
-        margin: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
         flex: 1 1 200px;
-        text-align: center;
+        padding: 10px;
+        margin: 5px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus, select:focus {
+        outline: none;
+        border-color: #7b1fa2;
+        box-shadow: 0 0 0 2px rgba(123, 31, 162, 0.2);
     }
     button {
-        padding: 12px 25px;
-        background-color: #8e44ad;
+        padding: 10px 20px;
+        background-color: #7b1fa2;
         color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.1s;
-        font-weight: bold;
-        margin: 10px;
+        font-weight: 500;
+        font-size: 14px;
+        margin: 5px;
     }
     button:hover {
-        background-color: #7d3c98;
+        background-color: #4a148c;
         transform: translateY(-2px);
     }
     button:active {
         transform: translateY(0);
     }
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+        background-color: #7b1fa2;
+        color: white;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+        border-bottom: none;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .edit-buttons {
+        display: flex;
+        justify-content: center;
+    }
+    .edit-button, .delete-button {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 4px;
+        margin: 0 2px;
+    }
+    .edit-button {
+        background-color: #2196f3;
+    }
+    .edit-button:hover {
+        background-color: #1976d2;
+    }
+    .delete-button {
+        background-color: #f44336;
+    }
+    .delete-button:hover {
+        background-color: #d32f2f;
+    }
     #exportPDF {
-        margin-top: 20px;
-        background-color: #2ecc71;
+        background-color: #4caf50;
+        display: block;
+        margin: 20px auto;
+        width: 200px;
     }
     #exportPDF:hover {
-        background-color: #27ae60;
-    }
-    .container {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
+        background-color: #388e3c;
     }
 </style>
 </head>
@@ -101,7 +135,7 @@
                 <option value="Sí">Sí</option>
                 <option value="No">No</option>
             </select>
-            <button type="submit">Agregar</button>
+            <button type="submit" id="submitBtn">Agregar</button>
         </form>
 
         <table id="contactTable">
@@ -110,6 +144,7 @@
                     <th>Nombre</th>
                     <th>Teléfono</th>
                     <th>Descuento</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -127,6 +162,7 @@
         const form = document.getElementById('contactForm');
         const table = document.getElementById('contactTable');
         const exportBtn = document.getElementById('exportPDF');
+        let editingRow = null;
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -135,69 +171,127 @@
             const telefono = document.getElementById('telefono').value;
             const descuento = document.getElementById('descuento').value;
 
-            const newRow = table.insertRow(-1);
-            newRow.insertCell(0).textContent = nombre;
-            newRow.insertCell(1).textContent = telefono;
-            newRow.insertCell(2).textContent = descuento;
+            if (editingRow) {
+                editingRow.cells[0].textContent = nombre;
+                editingRow.cells[1].textContent = telefono;
+                editingRow.cells[2].textContent = descuento;
+                editingRow = null;
+                document.getElementById('submitBtn').textContent = 'Agregar';
+            } else {
+                addNewRow(nombre, telefono, descuento);
+            }
 
             form.reset();
         });
 
+        function addNewRow(nombre, telefono, descuento) {
+            const newRow = table.tBodies[0].insertRow(-1);
+            newRow.insertCell(0).textContent = nombre;
+            newRow.insertCell(1).textContent = telefono;
+            newRow.insertCell(2).textContent = descuento;
+
+            const actionsCell = newRow.insertCell(3);
+            actionsCell.className = 'edit-buttons';
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'Editar';
+            editBtn.className = 'edit-button';
+            editBtn.onclick = () => editRow(newRow);
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Eliminar';
+            deleteBtn.className = 'delete-button';
+            deleteBtn.onclick = () => deleteRow(newRow);
+            actionsCell.appendChild(editBtn);
+            actionsCell.appendChild(deleteBtn);
+        }
+
+        function editRow(row) {
+            document.getElementById('nombre').value = row.cells[0].textContent;
+            document.getElementById('telefono').value = row.cells[1].textContent;
+            document.getElementById('descuento').value = row.cells[2].textContent;
+            editingRow = row;
+            document.getElementById('submitBtn').textContent = 'Actualizar';
+        }
+
+        function deleteRow(row) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta fila?')) {
+                row.remove();
+            }
+        }
+
         exportBtn.addEventListener('click', function() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF({
+                orientation: "portrait",
+                unit: "mm",
+                format: "a4"
+            });
 
-            // Configurar el estilo del PDF
-            doc.setFillColor(142, 68, 173);  // Color morado similar al de la imagen
-            doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');  // Rectángulo morado en la parte superior
+            // Configuración de estilos
+            const primaryColor = [123, 31, 162];
+            const textColor = [51, 51, 51];
+            const lineColor = [224, 224, 224];
 
-            // Añadir un título al PDF
-            doc.setFontSize(24);
-            doc.setTextColor(255, 255, 255);  // Texto blanco
-            doc.text('Nombres', doc.internal.pageSize.width / 2, 25, { align: 'center' });
+            // Márgenes y dimensiones
+            const pageWidth = doc.internal.pageSize.width;
+            const pageHeight = doc.internal.pageSize.height;
+            const margin = 15;
+            const contentWidth = pageWidth - 2 * margin;
 
-            // Configurar estilos para la tabla
-            const styles = {
+            // Título
+            doc.setFillColor(...primaryColor);
+            doc.rect(0, 0, pageWidth, 30, 'F');
+            doc.setFontSize(18);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.text('Tabla de Contactos y Descuentos', pageWidth / 2, 20, { align: 'center' });
+
+            // Contenido de la tabla
+            const tableBody = Array.from(table.tBodies[0].rows).map(row => 
+                [row.cells[0].textContent, row.cells[1].textContent, row.cells[2].textContent]
+            );
+
+            // Configuración de la tabla
+            doc.autoTable({
+                head: [['Nombre', 'Teléfono', 'Descuento']],
+                body: tableBody,
+                startY: 40,
+                margin: { left: margin, right: margin },
+                theme: 'grid',
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 9,
+                    cellPadding: 3,
+                    overflow: 'linebreak',
+                    lineColor: lineColor,
+                    lineWidth: 0.1,
+                    halign: 'center',
+                },
                 headStyles: {
-                    fillColor: [142, 68, 173],  // Color morado para el encabezado
+                    fillColor: primaryColor,
                     textColor: 255,
                     fontStyle: 'bold',
-                    halign: 'center'
                 },
                 bodyStyles: {
-                    textColor: 50,
-                    halign: 'center'
+                    textColor: textColor,
                 },
                 alternateRowStyles: {
-                    fillColor: [248, 248, 248]
+                    fillColor: [250, 250, 250],
                 },
                 columnStyles: {
                     0: { cellWidth: 'auto' },
                     1: { cellWidth: 'auto' },
-                    2: { cellWidth: 'auto' }
+                    2: { cellWidth: 'auto' },
                 },
-                margin: { top: 50 }
-            };
-
-            // Obtener los datos de la tabla
-            const data = [];
-            for (let i = 1; i < table.rows.length; i++) {
-                const row = table.rows[i];
-                data.push([
-                    row.cells[0].textContent,
-                    row.cells[1].textContent,
-                    row.cells[2].textContent
-                ]);
-            }
-
-            // Generar la tabla en el PDF
-            doc.autoTable({
-                head: [['Nombres', 'Número', 'Descuentos']],
-                body: data,
-                ...styles
+                didDrawPage: function(data) {
+                    // Pie de página
+                    doc.setFontSize(8);
+                    doc.setTextColor(...textColor);
+                    doc.text('Página ' + data.pageNumber, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                },
             });
 
-            doc.save('tabla_contactos_centrada.pdf');
+            // Guardar el PDF
+            doc.save('tabla_contactos_y_descuentos.pdf');
         });
     </script>
 </body></html>
