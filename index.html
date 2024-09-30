@@ -96,7 +96,6 @@
         <form id="contactForm">
             <input type="text" id="nombre" placeholder="Nombre" required>
             <input type="tel" id="telefono" placeholder="Teléfono" required>
-            <input type="text" id="instagram" placeholder="Instagram" required>
             <select id="descuento" required>
                 <option value="">Seleccione descuento</option>
                 <option value="Sí">Sí</option>
@@ -110,7 +109,6 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Teléfono</th>
-                    <th>Instagram</th>
                     <th>Descuento</th>
                 </tr>
             </thead>
@@ -135,14 +133,12 @@
             
             const nombre = document.getElementById('nombre').value;
             const telefono = document.getElementById('telefono').value;
-            const instagram = document.getElementById('instagram').value;
             const descuento = document.getElementById('descuento').value;
 
             const newRow = table.insertRow(-1);
             newRow.insertCell(0).textContent = nombre;
             newRow.insertCell(1).textContent = telefono;
-            newRow.insertCell(2).textContent = instagram;
-            newRow.insertCell(3).textContent = descuento;
+            newRow.insertCell(2).textContent = descuento;
 
             form.reset();
         });
@@ -178,8 +174,7 @@
                 columnStyles: {
                     0: { cellWidth: 'auto' },
                     1: { cellWidth: 'auto' },
-                    2: { cellWidth: 'auto' },
-                    3: { cellWidth: 'auto' }
+                    2: { cellWidth: 'auto' }
                 },
                 margin: { top: 50 }
             };
@@ -191,14 +186,13 @@
                 data.push([
                     row.cells[0].textContent,
                     row.cells[1].textContent,
-                    row.cells[2].textContent,
-                    row.cells[3].textContent
+                    row.cells[2].textContent
                 ]);
             }
 
             // Generar la tabla en el PDF
             doc.autoTable({
-                head: [['Nombres', 'Número', 'Instagram', 'Descuentos']],
+                head: [['Nombres', 'Número', 'Descuentos']],
                 body: data,
                 ...styles
             });
