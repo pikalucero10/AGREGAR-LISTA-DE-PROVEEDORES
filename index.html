@@ -1,4 +1,4 @@
-<html><head><base href="https://websim.io/"><title>Tabla de Contactos y Descuentos - Diseño Moderno</title>
+<html><head><base href="https://websim.io/"><title>Lista de Proveedores de Medias</title>
 <style>
     body {
         font-family: 'Roboto', sans-serif;
@@ -125,7 +125,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Tabla de Contactos y Descuentos</h1>
+        <h1>Lista de Proveedores de Medias</h1>
         
         <form id="contactForm">
             <input type="text" id="nombre" placeholder="Nombre" required>
@@ -164,6 +164,12 @@
         const exportBtn = document.getElementById('exportPDF');
         let editingRow = null;
 
+        function toTitleCase(str) {
+            return str.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -172,9 +178,9 @@
             const descuento = document.getElementById('descuento').value;
 
             if (editingRow) {
-                editingRow.cells[0].textContent = nombre;
+                editingRow.cells[0].textContent = toTitleCase(nombre);
                 editingRow.cells[1].textContent = telefono;
-                editingRow.cells[2].textContent = descuento;
+                editingRow.cells[2].textContent = toTitleCase(descuento);
                 editingRow = null;
                 document.getElementById('submitBtn').textContent = 'Agregar';
             } else {
@@ -186,9 +192,9 @@
 
         function addNewRow(nombre, telefono, descuento) {
             const newRow = table.tBodies[0].insertRow(-1);
-            newRow.insertCell(0).textContent = nombre;
+            newRow.insertCell(0).textContent = toTitleCase(nombre);
             newRow.insertCell(1).textContent = telefono;
-            newRow.insertCell(2).textContent = descuento;
+            newRow.insertCell(2).textContent = toTitleCase(descuento);
 
             const actionsCell = newRow.insertCell(3);
             actionsCell.className = 'edit-buttons';
@@ -243,11 +249,11 @@
             doc.setFontSize(18);
             doc.setTextColor(255, 255, 255);
             doc.setFont("helvetica", "bold");
-            doc.text('Tabla de Contactos y Descuentos', pageWidth / 2, 20, { align: 'center' });
+            doc.text('Lista de Proveedores de Medias', pageWidth / 2, 20, { align: 'center' });
 
             // Contenido de la tabla
             const tableBody = Array.from(table.tBodies[0].rows).map(row => 
-                [row.cells[0].textContent, row.cells[1].textContent, row.cells[2].textContent]
+                [toTitleCase(row.cells[0].textContent), row.cells[1].textContent, toTitleCase(row.cells[2].textContent)]
             );
 
             // Configuración de la tabla
@@ -291,7 +297,7 @@
             });
 
             // Guardar el PDF
-            doc.save('tabla_contactos_y_descuentos.pdf');
+            doc.save('lista_proveedores_medias.pdf');
         });
     </script>
 </body></html>
